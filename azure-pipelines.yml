@@ -12,7 +12,7 @@ variables:
   buildConfiguration: 'Release'
   azureSubscription: 'EduSyncDevOpsConnection' # Your Azure DevOps service connection name
   webAppName: 'EduSyncVirendraBackend' # Your Azure Web App name
-  solution: '**/*.sln'
+  solution: 'edusync_api.sln' 
 
 steps:
 - task: UseDotNet@2
