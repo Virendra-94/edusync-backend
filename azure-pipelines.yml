@@ -1,0 +1,49 @@
+# .NET Core with Azure Web App
+# Build and deploy a .NET Core application to an Azure Web App
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+  - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  buildConfiguration: 'Release'
+
+
+steps:
+- task: UseDotNet@2
+  displayName: 'Install .NET SDK'
+  inputs:
+    packageType: 'sdk'
+    version: '8.x'
+    installationPath: $(Agent.ToolsDirectory)/dotnet
+
+- task: DotNetCoreCLI@2
+  displayName: 'Restore NuGet packages'
+  inputs:
+    command: 'restore'
+    projects: '$(solution)'
+    feedsToUse: 'select'
+
+- script: |
+    dotnet build --configuration $(buildConfiguration)
+    dotnet test --configuration $(buildConfiguration) --no-build --collect:"XPlat Code Coverage"
+  displayName: 'Build and Test .NET Project'
+
+- script: |
+    dotnet publish -c $(buildConfiguration) -o $(Build.ArtifactStagingDirectory)
+    cd $(Build.ArtifactStagingDirectory)
+    zip -r $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip *
+  displayName: 'Publish and Package .NET Project'
+
+- task: AzureWebApp@1
+  displayName: 'Deploy to Azure Web App'
+  inputs:
+    azureSubscription: '$(azureSubscription)'
+    appType: 'webApp'
+    appName: 'EduSyncVirendraBackend'
+    package: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    deploymentMethod: 'auto'
+
