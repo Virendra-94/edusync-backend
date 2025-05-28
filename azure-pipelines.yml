@@ -23,6 +23,7 @@ steps:
 
 - task: AzureWebApp@1
   inputs:
+    azureSubscription: 'edusyncconnection' 
     appType: 'webApp'
     appName: 'edusyncvirendraback'
     package: '$(Build.ArtifactStagingDirectory)'
