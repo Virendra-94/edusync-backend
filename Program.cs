@@ -39,7 +39,9 @@ builder.Services.AddCors(options =>
                     "http://localhost:5173",    // React dev server HTTP
                     "https://localhost:5173",   // React dev server HTTPS
                     "http://localhost:5172",    // API HTTP
-                    "https://localhost:7136"    // API HTTPS
+                    "https://localhost:7136",
+                "https://thankful-mushroom-08adc020f.6.azurestaticapps.net"
+                // API HTTPS
                 )
                 .AllowAnyHeader()
                 .AllowAnyMethod()
