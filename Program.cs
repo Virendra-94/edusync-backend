@@ -5,6 +5,7 @@ using edusync_api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["ApplicationInsights:InstrumentationKey"]);
 // Add Azure-specific configuration
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
