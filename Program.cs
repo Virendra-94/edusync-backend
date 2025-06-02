@@ -2,10 +2,11 @@ using EduSyncAPI.Services;
 using EduSyncAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using edusync_api.Services;
-
+using edusync_api.Interfaces;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["ApplicationInsights:InstrumentationKey"]);
+builder.Services.AddSingleton<IEventHubService, EventHubService>();
 // Add Azure-specific configuration
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
